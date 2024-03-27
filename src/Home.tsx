@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import Table from "./components/Table";
 import { Response } from "../types/Response";
+import ItemsPerPageInput from "./components/ItemsPerPageInput";
+import { Stack } from "@mui/material";
 
 function Home() {
   const { data, isLoading } = useQuery({
@@ -15,7 +17,12 @@ function Home() {
     },
   });
 
-  return isLoading ? "Loading..." : <Table tags={data?.items} />;
+  return (
+    <Stack spacing={1}>
+      <ItemsPerPageInput />
+      {isLoading ? "Loading..." : <Table tags={data?.items} />}
+    </Stack>
+  );
 }
 
 export default Home;
