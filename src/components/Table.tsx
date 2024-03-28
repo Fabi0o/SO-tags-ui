@@ -1,5 +1,7 @@
 import { Tag } from "../../types/Response";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, useGridApiRef } from "@mui/x-data-grid";
+import useItemsPerPageStore from "../store/itemsPerPageStore";
+import { useEffect } from "react";
 
 type Props = {
   tags: Tag[] | undefined;
@@ -23,17 +25,24 @@ const columns: GridColDef[] = [
 ];
 
 function Table({ tags }: Props) {
-  const rows = tags!.map(({ name, count }, id) => {
-    return {
-      id,
-      name,
-      count,
-    };
-  });
+  const rows = tags!.map(({ name, count }, id) => ({
+    id,
+    name,
+    count,
+  }));
+
+  const apiRef = useGridApiRef();
+
+  const { itemsPerPage } = useItemsPerPageStore();
+
+  useEffect(() => {
+    apiRef.current.setPageSize(itemsPerPage);
+  }, [itemsPerPage]);
 
   return (
     <>
       <DataGrid
+        autoHeight
         rows={rows}
         columns={columns}
         initialState={{
@@ -44,6 +53,7 @@ function Table({ tags }: Props) {
         autosizeOptions={{
           expand: true,
         }}
+        apiRef={apiRef}
       />
     </>
   );
