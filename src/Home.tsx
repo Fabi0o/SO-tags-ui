@@ -4,15 +4,16 @@ import { Response } from "../types/Response";
 import ItemsPerPageInput from "./components/ItemsPerPageInput";
 import { Stack } from "@mui/material";
 import Loader from "./components/Loader";
+import ErrorAlert from "./components/ErrorAlert";
 
 function Home() {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["tags"],
     queryFn: async (): Promise<Response> => {
       const res = await fetch(
         "https://api.stackexchange.com/2.3/tags?order=desc&sort=popular&site=stackoverflow"
       );
-      if (!res.ok) throw new Error("Not found!");
+      if (!res.ok) throw new Error("Oops, something went wrong!");
 
       return res.json();
     },
@@ -20,8 +21,14 @@ function Home() {
 
   return (
     <Stack spacing={1}>
-      <ItemsPerPageInput />
-      {isLoading ? <Loader /> : <Table tags={data?.items} />}
+      {isError ? (
+        <ErrorAlert msg={error.message} />
+      ) : (
+        <>
+          <ItemsPerPageInput />
+          {isLoading ? <Loader /> : <Table tags={data?.items} />}
+        </>
+      )}
     </Stack>
   );
 }
