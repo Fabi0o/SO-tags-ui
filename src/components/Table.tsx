@@ -42,6 +42,7 @@ function Table({ tags }: Props) {
   return (
     <>
       <DataGrid
+        sortingOrder={["desc", "asc"]}
         autoHeight
         rows={rows}
         columns={columns}
