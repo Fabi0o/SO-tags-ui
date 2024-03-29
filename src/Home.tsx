@@ -3,6 +3,7 @@ import Table from "./components/Table";
 import { Response } from "../types/Response";
 import ItemsPerPageInput from "./components/ItemsPerPageInput";
 import { Stack } from "@mui/material";
+import Loader from "./components/Loader";
 
 function Home() {
   const { data, isLoading } = useQuery({
@@ -20,7 +21,7 @@ function Home() {
   return (
     <Stack spacing={1}>
       <ItemsPerPageInput />
-      {isLoading ? "Loading..." : <Table tags={data?.items} />}
+      {isLoading ? <Loader /> : <Table tags={data?.items} />}
     </Stack>
   );
 }
