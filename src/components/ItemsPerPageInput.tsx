@@ -11,7 +11,10 @@ function ItemsPerPageInput() {
       sx={{ width: "25ch" }}
       type="number"
       value={itemsPerPage}
-      onChange={(e) => change(Number(e.target.value))}
+      onChange={(e) => {
+        if (Number(e.target.value) > 100) e.target.value = "100";
+        change(Number(e.target.value));
+      }}
     />
   );
 }
