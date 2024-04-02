@@ -13,6 +13,7 @@ function ItemsPerPageInput() {
       value={itemsPerPage}
       onChange={(e) => {
         if (Number(e.target.value) > 100) e.target.value = "100";
+        if (Number(e.target.value) <= 0) e.target.value = "1";
         change(Number(e.target.value));
       }}
     />
